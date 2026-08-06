@@ -1,0 +1,11 @@
+{
+  "domain": "glm_coding_plan",
+  "name": "GLM Coding Plan",
+  "version": "1.0.0",
+  "config_flow": true,
+  "documentation": "https://open.bigmodel.cn/",
+  "dependencies": [],
+  "codeowners": ["@flyice-juin"],
+  "requirements": ["aiohttp"],
+  "iot_class": "cloud_polling"
+}

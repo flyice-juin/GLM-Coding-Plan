@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Home Assistant 运行时（绝不能提交，含 Token 等敏感配置）
+.storage/
+home-assistant*.db*
+home-assistant.log*
+
+# 测试与临时文件
+test_*.py
+probe*.py
+analyze.py
+gen_brand.py
+*_raw.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,48 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "GLM Coding Plan",
+                "description": "填入你的 GLM Coding Plan Token，选择端点。Token 仅存储在本机，不会上传。",
+                "data": {
+                    "name": "名称（用于 HA 设备名）",
+                    "token": "Token（API Key）",
+                    "endpoint": "端点"
+                }
+            },
+            "reauth_confirm": {
+                "title": "重新认证 GLM Coding Plan",
+                "description": "Token 已失效（{name}），请重新填写有效的 Token。",
+                "data": {
+                    "token": "新 Token"
+                }
+            }
+        },
+        "error": {
+            "invalid_auth": "Token 无效或已过期，请检查后重试",
+            "cannot_connect": "无法连接到 GLM 服务，请检查网络或稍后重试",
+            "unknown": "未知错误，请查看日志"
+        },
+        "abort": {
+            "reauth_success": "重新认证成功"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "GLM Coding Plan 配置",
+                "description": "修改 Token / 端点 / 名称。Token 留空则保留原值。",
+                "data": {
+                    "name": "名称",
+                    "token": "Token（留空保留原值）",
+                    "endpoint": "端点"
+                }
+            }
+        },
+        "error": {
+            "invalid_auth": "Token 无效或已过期",
+            "cannot_connect": "无法连接到 GLM 服务",
+            "unknown": "未知错误"
+        }
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "GLM Coding Plan",
+                "description": "Enter your GLM Coding Plan token and select an endpoint. The token is stored locally only.",
+                "data": {
+                    "name": "Name (HA device name)",
+                    "token": "Token (API Key)",
+                    "endpoint": "Endpoint"
+                }
+            },
+            "reauth_confirm": {
+                "title": "Re-authenticate GLM Coding Plan",
+                "description": "Token for {name} is no longer valid. Please enter a new token.",
+                "data": {
+                    "token": "New Token"
+                }
+            }
+        },
+        "error": {
+            "invalid_auth": "Token is invalid or expired. Please check and retry.",
+            "cannot_connect": "Cannot connect to the GLM service. Check your network or try again later.",
+            "unknown": "Unknown error. See the logs."
+        },
+        "abort": {
+            "reauth_success": "Re-authentication successful."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "GLM Coding Plan configuration",
+                "description": "Update the token / endpoint / name. Leave the token empty to keep the current value.",
+                "data": {
+                    "name": "Name",
+                    "token": "Token (leave empty to keep current)",
+                    "endpoint": "Endpoint"
+                }
+            }
+        },
+        "error": {
+            "invalid_auth": "Token is invalid or expired.",
+            "cannot_connect": "Cannot connect to the GLM service.",
+            "unknown": "Unknown error."
+        }
+    }
+}
