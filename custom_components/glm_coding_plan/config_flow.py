@@ -191,19 +191,41 @@ class GlmCodingPlanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return GlmCodingPlanOptionsFlow(config_entry)
 
 
-class GlmCodingPlanOptionsFlow(config_entries.OptionsFlow):
-    """Options flow：允许随时修改 Token / 端点 / 名称。"""
+# HA ≥ 2024.11 提供了 OptionsFlowWithConfigEntry，自带 self.config_entry 属性；
+# 旧版本则回退到普通 OptionsFlow 并用私有属性保存 entry。
+# 关键点：新版 HA 禁止在 OptionsFlow.__init__ 中给 self.config_entry 赋值
+# （会抛 RuntimeError，导致配置向导 500），所以旧路径必须用 self._entry。
+if hasattr(config_entries, "OptionsFlowWithConfigEntry"):
 
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Init options flow."""
-        self.config_entry = config_entry
+    class _OptionsFlowBase(config_entries.OptionsFlowWithConfigEntry):
+        """新版 HA 的 OptionsFlow 基类。"""
+
+        def _get_entry(self) -> config_entries.ConfigEntry:
+            return self.config_entry
+
+else:
+
+    class _OptionsFlowBase(config_entries.OptionsFlow):  # type: ignore[no-redef]
+        """旧版 HA 的 OptionsFlow 基类。"""
+
+        def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+            """Init options flow."""
+            # 注意：不能赋值给 self.config_entry（新版 HA 会报错），用私有属性
+            self._entry = config_entry
+
+        def _get_entry(self) -> config_entries.ConfigEntry:
+            return self._entry
+
+
+class GlmCodingPlanOptionsFlow(_OptionsFlowBase):
+    """Options flow：允许随时修改 Token / 端点 / 名称。"""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Options 主步骤。"""
         errors: dict[str, str] = {}
-        entry = self.config_entry
+        entry = self._get_entry()
         current = {**entry.data}
 
         if user_input is not None:
@@ -227,6 +249,9 @@ class GlmCodingPlanOptionsFlow(config_entries.OptionsFlow):
                 self.hass.config_entries.async_update_entry(
                     entry, data=new_data, title=new_data[CONF_NAME]
                 )
+                # 配置存在 entry.data 里，options 始终为空 → HA 不会因 options
+                # 变化自动重载集成，这里显式重载，让新 Token/端点立即生效并重新拉数据
+                await self.hass.config_entries.async_reload(entry.entry_id)
                 return self.async_create_entry(title=new_data[CONF_NAME], data={})
 
         return self.async_show_form(
